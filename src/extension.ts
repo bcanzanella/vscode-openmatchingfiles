@@ -10,30 +10,29 @@ interface OpenMatchingFilesQuickPickItem extends QuickPickItem {
 }
 
 export function activate(context: ExtensionContext) {
-    //const ch = window.createOutputChannel('openmatchingfiles');
+    //const ch = window.createOutputChannel('openMatchingFiles');
 
-    const disposableOpenMatchingFilesCommand = commands.registerCommand('extension.openmatchingfiles', async () => {
-        let loop = true;
+    const disposableOpenMatchingFilesCommand = commands.registerCommand('extension.openMatchingFiles', async () => {        
         let userInputValue;
-        while (loop) {
+        while (true) {
             userInputValue = await window.showInputBox({ prompt: 'Search for a file name', value: userInputValue });
             if (!userInputValue) break;
 
             let queryValue = userInputValue;
             if (!userInputValue.endsWith('*')) { queryValue += '*'; }
 
-            const uris = await workspace.findFiles(`**/${queryValue}`);
-            let items: OpenMatchingFilesQuickPickItem[];
-            if (!uris.length) {
-                items = [{
+            const foundFiles = await workspace.findFiles(`**/${queryValue}`);
+            let quickPickItems: OpenMatchingFilesQuickPickItem[];
+            if (!foundFiles || !foundFiles.length) {
+                quickPickItems = [{
                     label: `\u21a9 No results for ${userInputValue}. Go back? (Press 'Enter' to confirm or 'Escape' to cancel)`,
                     description: '',
                     command: 'prompt'
                 }];
             } else {
-                items = toQuickPickItems<OpenMatchingFilesQuickPickItem>(uris);
-                items.splice(0, 0, {
-                    label: `\u21b3 Open ${items.length} file${items.length > 1 ? 's' : ''} matching "${userInputValue}"`,
+                quickPickItems = toQuickPickItems<OpenMatchingFilesQuickPickItem>(foundFiles);
+                quickPickItems.splice(0, 0, {
+                    label: `\u21b3 Open ${quickPickItems.length} file${quickPickItems.length > 1 ? 's' : ''} matching "${userInputValue}"`,
                     description: '',
                     command: 'affirmative'
                 },
@@ -45,18 +44,19 @@ export function activate(context: ExtensionContext) {
                 );
 
             }
-            const quickPickResult = await window.showQuickPick(items, { placeHolder: userInputValue });
+            const quickPickResult = await window.showQuickPick(quickPickItems, { placeHolder: userInputValue });
             if (!quickPickResult) break;
 
-            if (quickPickResult.command !== 'prompt') {
-                loop = false;
+            if (quickPickResult.command === 'prompt') {
+                continue;
             }
 
-            if (quickPickResult.command === 'affirmative' || quickPickResult.command === 'file') {
-                uris.forEach(async uri => {
+            if (quickPickResult.command === 'affirmative' || quickPickResult.command === 'file') {                
+                foundFiles.forEach(async uri => {
                     const doc = await workspace.openTextDocument(uri);
-                    window.showTextDocument(doc, { preview: false, preserveFocus: true, viewColumn: ViewColumn.Active });
+                    await window.showTextDocument(doc, { preview: false, preserveFocus: true, viewColumn: ViewColumn.Active });
                 });
+                break;
             }
         }
     });

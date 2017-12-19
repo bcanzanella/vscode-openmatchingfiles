@@ -2,11 +2,13 @@
     "compilerOptions": {
         "forceConsistentCasingInFileNames": true,
         "module": "commonjs",
-        "target": "es2016",
+        "target": "es6",
         "outDir": "out",
-        "lib": [ "es2015", "es2016" ],
+        "lib": [
+            "es6"
+        ],
         "sourceMap": true,
-        "rootDir": "./src",
+        "rootDir": "src",
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
