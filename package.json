@@ -6,6 +6,7 @@
         "type": "git",
         "url": "https://github.com/bcanzanella/vscode-openmatchingfiles"
     },
+    "homepage": "https://github.com/bcanzanella/vscode-openmatchingfiles/blob/master/README.md",
     "version": "0.1.1",
     "publisher": "bcanzanella",
     "author": "Brian Canzanella <briancanzanella@gmail.com>",
@@ -17,11 +18,36 @@
     "categories": [
         "Other"
     ],
+    "keywords": [
+        "open",
+        "many",
+        "matching",
+        "files",
+        "glob",
+        "search"
+    ],
+    "galleryBanner": {
+        "color": "#e5e5e5",
+        "theme": "dark"
+    },
     "activationEvents": [
         "onCommand:extension.openMatchingFiles"
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": [
+            {
+                "title": "Open Matching Files configuration",
+                "properties": {
+                    "omf.openFilesConfirmationLimit": {
+                        "type": "number",
+                        "default": 20,
+                        "description": "Shows a confirmation before attempting to open more than this number of files. Set to 0 to disable.",
+                        "scope": "window"
+                    }
+                }
+            }
+        ],
         "commands": [
             {
                 "command": "extension.openMatchingFiles",
@@ -38,6 +64,7 @@
     "scripts": {
         "build": "tsc -p ./",
         "clean": "echo 'not yet'",
+        "compile": "tsc -p ./",
         "package": "vsce package",
         "publish": "vsce publish -p",
         "watch": "tsc -watch -p ./",
