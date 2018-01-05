@@ -1,29 +1,27 @@
 'use strict';
-import {
-    commands, ExtensionContext
-} from 'vscode';
- 
+import * as vscode from 'vscode';
 import { CommandCenter } from './commands';
 
-export function activate(context: ExtensionContext) {
-    //const ch = window.createOutputChannel('openMatchingFiles');
-    const disposableOpenMatchingFilesCommand = commands.registerCommand('extension.openMatchingFiles', async () => {
+export function activate(context: vscode.ExtensionContext) {
+    const outputChannel = vscode.window.createOutputChannel('openMatchingFiles');
+    let commandCenter: CommandCenter;
 
-        // const disposables: Disposable[] = [];
-        // context.subscriptions.push(new Disposable(() => {
-        //     Disposable.from(...disposables).dispose();
-        // }
-        // ));
+    const disposableOpenMatchingFilesCommand = vscode.commands.registerCommand('extension.openMatchingFiles', async () => {
+        try {
+            commandCenter = new CommandCenter(context, outputChannel);
+            await commandCenter.initialize();
+        }
+        catch (x) {
+            console.error(x);
+        }
 
-        var cc = new CommandCenter(context);
-        //disposables.push(cc);
-        await cc.start();
-        cc.dispose();
-        // init(context, disposables).catch(err => console.error(err));
+        if (commandCenter) {
+            commandCenter.dispose();
+        }
     });
+
+    context.subscriptions.push(outputChannel);
     context.subscriptions.push(disposableOpenMatchingFilesCommand);
 }
 
-
-export function deactivate(context: ExtensionContext) {
-}
+export function deactivate(context: vscode.ExtensionContext) { }
