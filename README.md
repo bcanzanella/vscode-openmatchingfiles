@@ -7,7 +7,9 @@
 
 ### Extension for Visual Studio Code
 
-Tired of wasting time opening multiple files with the same name across multiple folders?? Introducing Open Matching Files. Open editors for all files matching your search.
+Tired of wasting time opening multiple files with the same name across multiple folders?? 
+
+Introducing Open Matching Files. Open editors for all files matching your search.
 
 ## Preview
 
@@ -22,6 +24,21 @@ Tired of wasting time opening multiple files with the same name across multiple 
 
 `omf.openFilesConfirmationLimit { number, default=20 }`
   * Shows a confirmation before attempting to open more than 20 files. Set to 0 to disable. 
+
+```
+  "omf.openFilesConfirmationLimit": 50
+```
+
+`files.exclude`
+```
+"files.exclude": {
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/obj": true,
+    "**/SomeAnnoyingFileThatAppearsAllOver.txt": true
+}
+```
+* Open Matching Files uses the same search api as VSCode's command palette file search. Files and folders excluded here will also be excluded from an Open Matching Files search result.
 
 ## Requirements
 
