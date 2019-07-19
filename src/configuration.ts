@@ -1,14 +1,13 @@
-import { workspace, WorkspaceConfiguration } from 'vscode';
+import { workspace, WorkspaceConfiguration } from "vscode";
 
 export class Configuration {
+  private workspaceconfiguration: WorkspaceConfiguration | undefined;
 
-    private workspaceconfiguration: WorkspaceConfiguration;
-    
-    get<T>(key: string): T {
-        if (!this.workspaceconfiguration) {
-            this.workspaceconfiguration = workspace.getConfiguration('omf');
-        }
-
-        return this.workspaceconfiguration.get(key) as T;
+  get<T>(key: string): T {
+    if (!this.workspaceconfiguration) {
+      this.workspaceconfiguration = workspace.getConfiguration("omf");
     }
+
+    return this.workspaceconfiguration.get(key) as T;
+  }
 }

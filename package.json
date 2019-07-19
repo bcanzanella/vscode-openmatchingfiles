@@ -1,80 +1,80 @@
 {
-    "name": "openmatchingfiles",
-    "displayName": "Open Matching Files",
-    "description": "Opens all files matching a search query",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/bcanzanella/vscode-openmatchingfiles"
-    },
-    "homepage": "https://github.com/bcanzanella/vscode-openmatchingfiles/blob/master/README.md",
-    "version": "0.3.0",
-    "publisher": "bcanzanella",
-    "author": "Brian Canzanella <briancanzanella@gmail.com>",
-    "license": "MIT",
-    "icon": "assets/icon.png",
-    "engines": {
-        "vscode": "^1.18.0"
-    },
-    "categories": [
-        "Other"
+  "name": "openmatchingfiles",
+  "displayName": "Open Matching Files",
+  "description": "Opens all files matching a search query",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bcanzanella/vscode-openmatchingfiles"
+  },
+  "homepage": "https://github.com/bcanzanella/vscode-openmatchingfiles/blob/master/README.md",
+  "version": "0.4.0",
+  "publisher": "bcanzanella",
+  "author": "Brian Canzanella <briancanzanella@gmail.com>",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "engines": {
+    "vscode": "^1.31.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "open",
+    "many",
+    "matching",
+    "files",
+    "search"
+  ],
+  "galleryBanner": {
+    "color": "#656363",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onCommand:extension.openMatchingFiles"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "configuration": [
+      {
+        "title": "Open Matching Files configuration",
+        "properties": {
+          "omf.openFilesConfirmationLimit": {
+            "type": "number",
+            "default": 20,
+            "description": "Shows a confirmation before attempting to open more than this number of files. Set to 0 to disable.",
+            "scope": "window"
+          }
+        }
+      }
     ],
-    "keywords": [
-        "open",
-        "many",
-        "matching",
-        "files",
-        "search"
+    "commands": [
+      {
+        "command": "extension.openMatchingFiles",
+        "title": "Open Matching Files..."
+      }
     ],
-    "galleryBanner": {
-        "color": "#656363",
-        "theme": "dark"
-    },
-    "activationEvents": [
-        "onCommand:extension.openMatchingFiles"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "configuration": [
-            {
-                "title": "Open Matching Files configuration",
-                "properties": {
-                    "omf.openFilesConfirmationLimit": {
-                        "type": "number",
-                        "default": 20,
-                        "description": "Shows a confirmation before attempting to open more than this number of files. Set to 0 to disable.",
-                        "scope": "window"
-                    }
-                }
-            }
-        ],
-        "commands": [
-            {
-                "command": "extension.openMatchingFiles",
-                "title": "Open Matching Files..."
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "extension.openMatchingFiles",
-                "key": "alt+f"
-            }
-        ]
-    },
-    "scripts": {
-        "build": "tsc -p ./",
-        "clean": "echo 'not yet'",
-        "compile": "tsc -p ./",
-        "package": "vsce package",
-        "publish": "vsce publish -p",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test",
-        "vscode:prepublish": "npm run build"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.2",
-        "vscode": "^1.1.10",
-        "@types/node": "^8.5.1"
-    },
-    "dependencies": {}
+    "keybindings": [
+      {
+        "command": "extension.openMatchingFiles",
+        "key": "alt+f"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "clean": "echo 'not yet'",
+    "compile": "tsc -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish -p",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test",
+    "vscode:prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "3.5.3",
+    "vscode": "1.1.35",
+    "@types/node": "12.6.8"
+  },
+  "dependencies": {}
 }
