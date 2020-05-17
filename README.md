@@ -14,10 +14,27 @@ Introducing Open Matching Files. Open editors for all files matching your search
 
 ![demo](assets/demo.gif)
 
-## Features
+## Usage
 
-- Use the "Open Matching Files..." command or the `alt+f` keyboard shortcut to bring up the search box
-- Search for a specific file name or use glob patterns like `**∕*.{ts,js}` or `*.{ts,js}`
+- Use the "Open Matching Files..." command or the `alt+f` keyboard shortcut to bring up the search box and type your search
+
+## Features
+- Works with any file type or programming language
+- Search for a specific file name that can appear many times across many folders and open them all!
+   - `web.config`
+   - `app.config`
+   - `packages.config`
+   - `package.json`
+   - `.gitignore`
+   - `bower.json`
+   - `tsconfig.json`
+
+- Search using glob patterns and open them all! 
+  - `**∕*.{ts,js}`
+  - `*.{ts,js}`
+  - `*.yaml`
+  - `stored-procedure-*.sql`
+  - `*.csproj`
 
 ## Settings
 
@@ -29,7 +46,9 @@ Introducing Open Matching Files. Open editors for all files matching your search
   "omf.openFilesConfirmationLimit": 50
 ```
 
-`files.exclude`
+## Integrates with settings.json
+
+Open Matching Files uses the same search api as VSCode's command palette file search. Files and folders excluded here will also be excluded from an Open Matching Files search result.
 
 ```
 "files.exclude": {
@@ -39,8 +58,6 @@ Introducing Open Matching Files. Open editors for all files matching your search
     "**/SomeAnnoyingFileThatAppearsAllOver.txt": true
 }
 ```
-
-- Open Matching Files uses the same search api as VSCode's command palette file search. Files and folders excluded here will also be excluded from an Open Matching Files search result.
 
 ## Requirements
 
@@ -52,9 +69,24 @@ Introducing Open Matching Files. Open editors for all files matching your search
 npm install --no-save
 npm run build
 ```
+alternatively...
+
+```
+npm install --no-save
+npm run watch
+```
+
+## Testing
+
+```
+npm install --no-save
+npm run test
+```
+
+## Launching
 
 Click the `Launch Extension` task to run.
 
 ## Feedback & Contributing
 
-- Please report any bugs, suggestions or documentation requests via the [Github issues](https://github.com/bcanzanella/vscode-openmatchingfiles/issues)
+Please report any bugs, suggestions or documentation requests via [Github issues](https://github.com/bcanzanella/vscode-openmatchingfiles/issues)
