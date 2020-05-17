@@ -221,16 +221,23 @@ export class CommandCenter extends Disposable {
       }
     }
 
-    for (const file of args.state.files.sort((a, b) =>
+    const files = args.state.files.sort((a, b) =>
       naturalCompare(a.sortString, b.sortString)
-    )) {
-      const document = await workspace.openTextDocument(file.uri as Uri);
-      await window.showTextDocument(document, {
-        preview: false,
-        preserveFocus: true,
-        viewColumn: ViewColumn.Active,
-      });
+    );
+    for (const file of files) {
+      await this.openAndShowDocument(file.uri!);
     }
+    // now open (show) the first document
+    await this.openAndShowDocument(files[0].uri!);
+  }
+
+  private async openAndShowDocument(uri: Uri) {
+    const document = await workspace.openTextDocument(uri);
+    await window.showTextDocument(document, {
+      preview: false,
+      preserveFocus: true,
+      viewColumn: ViewColumn.Active,
+    });
   }
 
   @command("omf.openFile")
