@@ -21,7 +21,13 @@ interface Command {
 }
 
 interface State {
+  /**
+   * query as entered by the user
+   */
   query: string | undefined;
+  /**
+   * user's query after it has been processed
+   */
   preparedQuery?: string | undefined;
   files?: QuickPickItem[];
 }
@@ -31,6 +37,9 @@ interface CommandArgs {
   selected: QuickPickItem;
 }
 
+/**
+ * all possible OpenMatchingFiles commands
+ */
 type CommandType =
   | "omf.search"
   | "omf.start"
@@ -61,6 +70,11 @@ class QuickPickItem implements vscode.QuickPickItem {
 
 const registry: Command[] = [];
 
+/**
+ * decorator for attaching vscode commands to functions
+ * @param  {CommandType} commandName
+ * @returns Function
+ */
 function command(commandName: CommandType): Function {
   return (target: any, key: string, descriptor: any) => {
     if (!(typeof descriptor.value === "function"))
@@ -75,7 +89,10 @@ export class CommandCenter extends Disposable {
   private configuration: Configuration;
   private placeholder = `Search for a specific file name or use glob patterns like **∕*.{ts,js} or *.{ts,js}`;
 
-  constructor(context: ExtensionContext, private outputChannel: OutputChannel) {
+  constructor(
+    context: ExtensionContext | undefined,
+    private outputChannel: OutputChannel | undefined
+  ) {
     super(() => {
       this.disposables.forEach((_) => _.dispose());
     });
@@ -88,7 +105,7 @@ export class CommandCenter extends Disposable {
           return Promise.resolve(method.apply(this, args));
         }
       );
-      context.subscriptions.push(disposable);
+      context && context.subscriptions.push(disposable);
       return disposable;
     });
   }
@@ -235,20 +252,22 @@ export class CommandCenter extends Disposable {
     return /[a-z]|[\u0080-\u024F]/.test(chr) && chr === chr.toLowerCase();
   }
 
-  private buildQuery(query: string): string {
+  public buildQuery(query: string): string {
     const results: string[] = [];
-    const arr = query.split("");
+    const chars = query.split("");
 
     if (query.indexOf("**/") === -1) {
       results.push("**/");
     }
 
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < chars.length; i++) {
       let buffer = "";
-      const chr = arr[i];
+      const chr = chars[i];
       if (chr === "{") {
-        while (i < arr.length) {
-          const f = arr[i];
+        // if a user has provided {foo,bar} data,
+        // use it as is...
+        while (i < chars.length) {
+          const f = chars[i];
           buffer += f;
           if (f === "}") {
             break;
@@ -260,6 +279,8 @@ export class CommandCenter extends Disposable {
       if (buffer) {
         results.push(buffer);
       } else {
+        //...if not, we add both upper+lower case variants to allow
+        // for case-insensitive searching
         if (this.charAtIsUpper(chr)) {
           results.push(`{${chr.toLocaleLowerCase()},${chr}}`);
         } else if (this.charAtIsLower(chr)) {

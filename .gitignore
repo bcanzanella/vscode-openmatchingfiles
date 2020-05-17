@@ -60,3 +60,7 @@ typings/
 # project
 out
 .directory
+.vscode-test/
+
+# other
+.DS_Store
