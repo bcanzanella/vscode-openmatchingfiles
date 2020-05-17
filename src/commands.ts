@@ -13,6 +13,7 @@ import {
 import * as path from "path";
 import * as vscode from "vscode";
 import { Configuration } from "./configuration";
+import naturalCompare from "natural-compare-lite";
 
 interface Command {
   commandName: string;
@@ -50,10 +51,17 @@ type CommandType =
   | "omf.false";
 
 class QuickPickItem implements vscode.QuickPickItem {
+  /**
+   * usually the path name
+   */
   description: string;
   detail?: string | undefined;
+  sortString: string;
 
   constructor(
+    /**
+     * usually the fileName
+     */
     public label: string,
     public command: CommandType,
     public uri?: Uri | undefined,
@@ -65,6 +73,7 @@ class QuickPickItem implements vscode.QuickPickItem {
     this.uri = uri;
     this.description = description || "";
     this.detail = detail || "";
+    this.sortString = `${this.description}${this.label}`;
   }
 }
 
@@ -212,14 +221,16 @@ export class CommandCenter extends Disposable {
       }
     }
 
-    args.state.files.forEach(async (item) => {
-      const doc = await workspace.openTextDocument(item.uri as Uri);
-      await window.showTextDocument(doc, {
+    for (const file of args.state.files.sort((a, b) =>
+      naturalCompare(a.sortString, b.sortString)
+    )) {
+      const document = await workspace.openTextDocument(file.uri as Uri);
+      await window.showTextDocument(document, {
         preview: false,
         preserveFocus: true,
         viewColumn: ViewColumn.Active,
       });
-    });
+    }
   }
 
   @command("omf.openFile")
@@ -293,32 +304,35 @@ export class CommandCenter extends Disposable {
     return results.join("");
   }
 
-  private toQuickPickItems(uris: Uri[]): QuickPickItem[] {
+  /**
+   * Creates an array of sorted quickPick items
+   *
+   * @param  {Uri[]} uris
+   * @returns QuickPickItem
+   */
+  public toQuickPickItems(uris: Uri[]): QuickPickItem[] {
     return uris
       .map((uri) => {
-        const fsWorkspaceFolder =
-          workspace && workspace.getWorkspaceFolder(uri);
-        if (!fsWorkspaceFolder) return null;
-
-        const fsPath = fsWorkspaceFolder.uri.fsPath;
-        if (!fsPath) return null;
-
-        const item = path.relative(fsPath, uri.fsPath);
+        const workspaceFolder = workspace.getWorkspaceFolder(uri);
+        const fsPath = workspaceFolder && workspaceFolder.uri.fsPath;
+        return {
+          uri: uri,
+          fsPath: fsPath,
+        };
+      })
+      .filter((_) => _.uri && _.fsPath)
+      .map((mapped) => {
+        const item = path.relative(mapped.fsPath!, mapped.uri.fsPath);
         return new QuickPickItem(
           "     " + path.basename(item),
           "omf.openFile",
-          uri,
+          mapped.uri,
           path.dirname(item)
         );
       })
-      .sort((a: QuickPickItem | null, b: QuickPickItem | null) => {
+      .sort((a: QuickPickItem, b: QuickPickItem) => {
         if (!a || !b) return 0;
-
-        if (a.label < b.label) return -1;
-        if (a.label > b.label) return 1;
-        if (a.description < b.description) return -1;
-        if (a.description > b.description) return 1;
-        return 0;
+        return naturalCompare(a.sortString, b.sortString);
       }) as QuickPickItem[];
   }
 }
