@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [0.5.0] - 2020-05-17
 ### Added
 - Adds integration tests
+- Adds exclusions from settings.json's `search.exclude`
 
 ### Changed
 - Fixes https://github.com/bcanzanella/vscode-openmatchingfiles/issues/3

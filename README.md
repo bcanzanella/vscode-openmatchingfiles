@@ -19,7 +19,6 @@ Introducing Open Matching Files. Open editors for all files matching your search
 - Use the "Open Matching Files..." command or the `alt+f` keyboard shortcut to bring up the search box and type your search
 
 ## Features
-- Works with any file type or programming language
 - Search for a specific file name that can appear many times across many folders and open them all!
    - `web.config`
    - `app.config`
@@ -35,6 +34,7 @@ Introducing Open Matching Files. Open editors for all files matching your search
   - `*.yaml`
   - `stored-procedure-*.sql`
   - `*.csproj`
+- Works with any file type or programming language
 
 ## Settings
 
@@ -54,7 +54,12 @@ Open Matching Files uses the same search api as VSCode's command palette file se
 "files.exclude": {
     "**/node_modules": true,
     "**/bin": true,
-    "**/obj": true,
+    "**/obj": true
+},
+"search.exclude": {
+    "**/node_modules": true,
+    "**/.vscode-test": true,
+    "out": true,
     "**/SomeAnnoyingFileThatAppearsAllOver.txt": true
 }
 ```

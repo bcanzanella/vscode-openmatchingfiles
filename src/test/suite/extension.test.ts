@@ -23,34 +23,33 @@ suite("Extension Test Suite", async () => {
     ["**/*.{htm,html}", 2],
   ].forEach((args) => {
     test(`query can be found(${args[0]})`, async () => {
-      const built = commands.buildQuery(args[0] as string);
-      const actual = await vscode.workspace.findFiles(built);
-      assert.equal(actual.length, args[1]);
+      const results = await commands.searchCore({ query: args[0] as string });
+      assert.equal(results.length, args[1]);
     });
   });
 
   [["**/xyz"], ["foo"], ["**/*.{HTM,HTML}"], ["bar.html"], ["file.h"]].forEach(
     (args) => {
       test(`query cannot be found(${args[0]})`, async () => {
-        const actual = await vscode.workspace.findFiles(
-          commands.buildQuery(args[0] as string)
-        );
-        assert.equal(actual.length, 0);
+        const results = await commands.searchCore({ query: args[0] as string });
+        assert.equal(results.length, 0);
       });
     }
   );
 
-  [["text*"]].forEach(
-    (args) => {
-      test(`query returns sorted files(${args[0]})`, async () => {
-        const uris = await vscode.workspace.findFiles(
-          commands.buildQuery(args[0] as string)
-        );
-        const quickPicks = commands.toQuickPickItems(uris);
-        const workspaceFolder = vscode.workspace.workspaceFolders![0];
-        assert.equal(quickPicks[0].uri?.toString(), `${workspaceFolder.uri}/source/text/text0.txt`);
-        assert.equal(quickPicks[quickPicks.length - 1].uri?.toString(), `${workspaceFolder.uri}/source/text/z/text100.txt`); 
+  [["text*"]].forEach((args) => {
+    test(`query returns sorted files(${args[0]})`, async () => {
+      const uris = await commands.searchCore({ query: args[0] as string });
+      const quickPicks = commands.toQuickPickItems(uris);
+      const workspaceFolder = vscode.workspace.workspaceFolders![0];
+      assert.equal(
+        quickPicks[0].uri?.toString(),
+        `${workspaceFolder.uri}/source/text/text0.txt`
+      );
+      assert.equal(
+        quickPicks[quickPicks.length - 1].uri?.toString(),
+        `${workspaceFolder.uri}/source/text/z/text100.txt`
+      );
     });
-    }
-  );
+  });
 });

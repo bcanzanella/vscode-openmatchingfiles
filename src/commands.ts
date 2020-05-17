@@ -148,11 +148,9 @@ export class CommandCenter extends Disposable {
   private async search(state: State): Promise<{} | undefined> {
     if (!state.query) return;
 
-    let queryValue = this.buildQuery(state.query);
-    state.preparedQuery = queryValue;
     let foundFiles;
     try {
-      foundFiles = await workspace.findFiles(queryValue);
+      foundFiles = await this.searchCore(state);
     } catch (x) {
       return await this.restart(
         state.query,
@@ -168,6 +166,22 @@ export class CommandCenter extends Disposable {
     state.files = files;
 
     return this.pickFiles(state);
+  }
+  /**
+   * builds the search query and finds matching files
+   * using any search exclusions.
+   * @param  {State} state
+   * @returns Promise
+   */
+  async searchCore(state: State): Promise<Uri[]> {
+    let queryValue = this.buildQuery(state.query!);
+    state.preparedQuery = queryValue;
+    const exclude = [
+      ...Object.keys(
+        (await workspace.getConfiguration("search", null).get("exclude")) || {}
+      ),
+    ].join(",");
+    return workspace.findFiles(queryValue, `{${exclude}}`);
   }
 
   private async select(

@@ -64,7 +64,7 @@
     "build": "tsc -p ./",
     "clean": "echo 'not yet'",
     "compile": "tsc -p ./",
-    "package": "vsce package",
+    "package": "npm run test && vsce package",
     "publish": "vsce publish -p",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
