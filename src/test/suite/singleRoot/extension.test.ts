@@ -1,9 +1,9 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { CommandCenter } from "../../commands";
+import { CommandCenter } from "../../../commands";
 
 suite("Extension Test Suite", async () => {
-  vscode.window.showInformationMessage("Start all tests.");
+  vscode.window.showInformationMessage("Start all singleRoot tests.");
   const commands = new CommandCenter(undefined, undefined);
   [
     ["*.csproj", 2],
@@ -52,4 +52,5 @@ suite("Extension Test Suite", async () => {
       );
     });
   });
+  
 });

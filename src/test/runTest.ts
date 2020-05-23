@@ -10,12 +10,17 @@ async function main() {
 
     // The path to the extension test script
     // Passed to --extensionTestsPath
-    const extensionTestsPath = path.resolve(__dirname, "./suite/index");
+	// const extensionSingleRootTestsPath = path.resolve(__dirname, "./suite/index");
+	// const extensionSingleRootTestsPath = path.resolve(__dirname, "./suite/index");
 
     // Download VS Code, unzip it and run the integration test
-	await runTests({ extensionDevelopmentPath, extensionTestsPath,
+	await runTests({ extensionDevelopmentPath, extensionTestsPath: path.resolve(__dirname, "./suite/index.singleRoot"),
 		launchArgs: ['./test-project', '--disable-extensions'] },
-		);
+	);
+
+	await runTests({ extensionDevelopmentPath, extensionTestsPath: path.resolve(__dirname, "./suite/index.multiRoot"),
+		launchArgs: ['openmatchingfilestest.code-workspace', '--disable-extensions'] },
+	);
   } catch (err) {
     console.error("Failed to run tests");
     process.exit(1);
