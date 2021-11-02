@@ -4,12 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.5.1] - 2021-11-01
+
+### Changed
+
+- Upgrades dependencies
+
 ## [0.5.0] - 2020-05-17
+
 ### Added
+
 - Adds integration tests
 - Adds exclusions from settings.json's `search.exclude`
 
 ### Changed
+
 - Fixes https://github.com/bcanzanella/vscode-openmatchingfiles/issues/3
 - Fixes https://github.com/bcanzanella/vscode-openmatchingfiles/issues/4
 - Fixes https://github.com/bcanzanella/vscode-openmatchingfiles/issues/5
