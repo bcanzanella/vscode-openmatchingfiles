@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,12 +25,19 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.15.x
+
       # Runs a single command using the runners shell
       - name: install
         run: npm install --no-save
-        
+
       - name: build
         run: npm run build
-        
-      - name: test
-        run: npm run test
+
+      - run: xvfb-run -a npm run test
+        if: runner.os == 'Linux'
+      - run: npm run test
+        if: runner.os != 'Linux'
