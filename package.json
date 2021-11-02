@@ -7,7 +7,7 @@
     "url": "https://github.com/bcanzanella/vscode-openmatchingfiles"
   },
   "homepage": "https://github.com/bcanzanella/vscode-openmatchingfiles/blob/master/README.md",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "bcanzanella",
   "author": "Brian Canzanella <briancanzanella@gmail.com>",
   "license": "MIT",
@@ -72,12 +72,12 @@
     "vscode:prepublish": "npm run build"
   },
   "devDependencies": {
-    "@types/glob": "7.1.1",
+    "@types/glob": "7.2.0",
     "@types/mocha": "7.0.2",
     "@types/natural-compare-lite": "1.4.0",
     "@types/node": "14.0.1",
     "@types/vscode": "1.31.0",
-    "glob": "7.1.6",
+    "glob": "7.2.0",
     "mocha": "7.1.2",
     "typescript": "3.9.2",
     "vscode-test": "1.3.0"
