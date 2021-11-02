@@ -238,11 +238,20 @@ export class CommandCenter extends Disposable {
     const files = args.state.files.sort((a, b) =>
       naturalCompare(a.sortString, b.sortString)
     );
+
+    let opened;
     for (const file of files) {
-      await this.openAndShowDocument(file.uri!);
+      try {
+        await this.openAndShowDocument(file.uri!);
+        opened = file;
+      } catch (ex) {
+        this.outputChannel?.appendLine((ex as any).message);
+      }
     }
-    // now open (show) the first document
-    await this.openAndShowDocument(files[0].uri!);
+    if (opened) {
+      // now open (show) the first document
+      await this.openAndShowDocument(opened.uri!);
+    }
   }
 
   private async openAndShowDocument(uri: Uri) {
