@@ -1,8 +1,5 @@
 # Open Matching Files
 
-[![](https://vsmarketplacebadge.apphb.com/version-short/bcanzanella.openmatchingfiles.svg)](https://marketplace.visualstudio.com/items?itemName=bcanzanella.openmatchingfiles)
-[![](https://vsmarketplacebadge.apphb.com/installs-short/bcanzanella.openmatchingfiles.svg)](https://marketplace.visualstudio.com/items?itemName=bcanzanella.openmatchingfiles)
-[![](https://vsmarketplacebadge.apphb.com/rating-short/bcanzanella.openmatchingfiles.svg)](https://marketplace.visualstudio.com/items?itemName=bcanzanella.openmatchingfiles)
 
 ### Extension for Visual Studio Code
 
